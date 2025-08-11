@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+:root {
+  background-image: linear-gradient(-45deg, #191970, #000000);
+  background-color: #191970;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--color-text-primary);
+  font-family: var(--font-manrope);
+}
+
+@theme {
+
+  --color-indigo-secondary: #38B48B;
+  --color-text-primary: #F5F5F5;
+  --color-orange-secondary: #FF5E5B;
+  --color-dark-indigo: #0a022f;
+  --color-vivid-purple: #7205b7;
+
+  --background-image: url("/logo.png");
+
+  --gradient-primary: linear-gradient(-45deg, var(--color-primary), var(--color-secondary));
+
+  --gradient-text-primary: radial-gradient(var(--color-orange-secondary), var(--color-indigo-secondary));
+  --gradient-brand: linear-gradient(45deg, var(--color-dark-indigo), var(--color-vivid-purple));
+
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Poppins", sans-serif;
+  --font-helvetica: "Helvetica", Arial, sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
+
+  --radius-xl: 1.5rem;
+
+  --shadow-custom: 0 10px 15px rgba(0, 0, 0, 0.2);
+
+  --screen-xs: 480px;
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+  --box-shadow-glass:
+}
+
+.slide-down {
+  animation: slideDown 0.5s ease-in;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.gradient-text-primary {
+  background: var(--gradient-text-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-brand {
+  background: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #38B48B20;
+  backdrop-filter: blur(20px);
+  border-radius: 3px;
+  margin: 4px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #38B48B30;
+  backdrop-filter: blur(20px);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #38B48B;
+  backdrop-filter: blur(20px);
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #38B48B30 #38B48B20;
+  backdrop-filter: blur(20px);
+}
+
+.glass::before {
+  overflow: hidden;
+  /* border-radius: 30px; */
+  -webkit-box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+  box-shadow: inset 2px 2px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+}
+
+.glass::after {
+  /* content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: 30px; */
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  /* -webkit-filter: url(#container-glass);
+            filter: url(#container-glass); */
+  overflow: hidden;
+  isolation: isolate;
+}
