@@ -9,13 +9,7 @@
             "phases": {
                 "setup": {
                     "nixPkgs": [
-                        "libGL",
-                        "gcc"
-                    ]
-                },
-                "install": {
-                    "cmds": [
-                        "pip install -r requirements.txt"
+                        "libGL"
                     ]
                 }
             }
