@@ -11,6 +11,8 @@
                     "nixPkgs": [
                         "...",
                         "libGL",
+                        "libGLU",
+                        "mesa",
                         "gcc"
                     ]
                 }
