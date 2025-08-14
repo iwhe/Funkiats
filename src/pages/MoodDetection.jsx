@@ -32,15 +32,14 @@ const MoodDetection = () => {
     const authenticationCheck = async () => {
       try {
         const response = await protectedRoute();
-        console.log(response);
         if (response?.statusCode === 401) {
           navigate("/connect");
         }
       } catch (error) {
-        console.log(error);
         if (error?.response?.status === 401) {
           navigate("/connect");
         }
+        setError(error.message);
       }
     }
     authenticationCheck();
@@ -78,10 +77,9 @@ const MoodDetection = () => {
     setResults(null);
 
     try {
-      const response = await axios.post("http://localhost:5001/detect-emotion", { image: imageData });
+      const response = await axios.post(`${import.meta.env.VITE_EMOTION_DETECTION_API_URL}/detect-emotion`, { image: imageData });
 
       const data = await response.data;
-      console.log(data);
 
       if (data.success) {
         setResults(data);
@@ -130,9 +128,6 @@ const MoodDetection = () => {
       const response = await http.get("/playlist/search?" + query);
       const data = await response.data;
 
-      // Inside your MoodDetection component, add the navigate hook
-
-      console.log("response::", response);
       if (response.status === 200) {
         navigate("/suggestion", {
           state: {
@@ -141,7 +136,6 @@ const MoodDetection = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       setError(error.message);
     } finally {
       setRecommendLoading(false);
@@ -299,7 +293,7 @@ const MoodDetection = () => {
         {error && (
           <div className=" slide-down shadow-lg mt-4 p-4 absolute top-[20px] bg-red-100 border border-red-400 text-red-700 rounded-lg max-w-md flex flex-row items-center justify-between">
             <div>
-              <strong>Error:</strong> {error}
+              {error}
             </div>
             <button
               className="ml-4 text-xl font-bold text-red-700 hover:text-red-900 transition-colors"

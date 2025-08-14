@@ -6,7 +6,6 @@ const DisplayPlaylist = ({ id, handlePlaylistClose }) => {
     useEffect(() => {
         const handlePlaylistClick = async (id) => {
             const playlistDetail = await getPlaylistDetail(id);
-            console.log(playlistDetail);
             setPlaylistsDetail(playlistDetail?.data);
         }
         handlePlaylistClick(id);
@@ -50,17 +49,12 @@ const DisplayPlaylist = ({ id, handlePlaylistClose }) => {
 
                     </div>
 
-                    {/* <p onClick={() => window.open(playlistsDetail?.owner?.external_urls?.spotify, "_blank")} className="text-text-primary text-xs w-fit p-4">{playlistsDetail?.owner?.display_name}</p> */}
                 </div>
 
                 <div className=" flex flex-col overflow-y-scroll   custom-scrollbar">
 
                     {playlistsDetail?.tracks?.items?.map((track) => (
                         <div key={track?.id}
-                            // onClick={(e) => {
-                            //     e.stopPropagation();
-                            //     window.open(track?.external_urls?.spotify || track?.album?.external_urls?.spotify, "_blank");
-                            // }}
                             className="group relative flex flex-row justify-between w-full items-center gap-[10px] hover:bg-secondary/10 cursor-pointer py-[10px] px-[10px] rounded-[10px] border-b-[0.5px] border-text-primary/10 transition-all duration-300 ease-in-out">
                             <div className="flex flex-row items-start gap-[10px] w-full">
                                 <div className="relative">

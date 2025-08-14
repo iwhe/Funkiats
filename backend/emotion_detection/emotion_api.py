@@ -111,5 +111,4 @@ def health_check():
 
 if __name__ == '__main__':
     print("🤖 Python Emotion Detection Microservice Starting...")
-    print("📡 Running on: http://localhost:5001")
     app.run(debug=True, use_reloader=False, host='0.0.0.0', port=5001)

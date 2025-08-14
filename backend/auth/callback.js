@@ -13,10 +13,8 @@ const callback = asyncHandler(async (req, res) => {
   const state = req.query.state;
 
   if (!code) {
-    console.error("No code parameter in callback");
     throw new ApiError(400, "Missing authorization code");
   }
-  console.log("Code::", code);
 
   const authOptions = {
     url: "https://accounts.spotify.com/api/token",
@@ -52,7 +50,6 @@ const callback = asyncHandler(async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     };
 
-    console.log("Access Token::", access_token);
     res
       .status(200)
       .cookie("access_token", access_token)
@@ -61,11 +58,9 @@ const callback = asyncHandler(async (req, res) => {
       .cookie("refresh_token", refresh_token)
       .cookie("scope", scope)
 
-    console.log("Redirecting to suggestion page...");
-    res.redirect("http://localhost:5173/suggestion");
+    res.redirect(process.env.FRONTEND_URL + "/suggestion");
 
   } catch (error) {
-    console.error("Error while retrieving tokens.", error);
     throw new ApiError(500, "Failed to get access token", error);
   }
 });

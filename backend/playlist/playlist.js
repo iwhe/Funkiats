@@ -94,7 +94,6 @@ const getPlaylist = asyncHandler(async (req, res) => {
 
   try {
     const data = await makeQuery();
-    // console.log("Data::", data);
     res.status(200).json(new ApiResponse(200, data, "Success"));
   } catch (error) {
     if (
@@ -118,13 +117,10 @@ const getPlaylist = asyncHandler(async (req, res) => {
 
       const data = await makeQuery();
 
-      // console.log("data::", data);
-
       res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, data, "Data retrieved and access token refreshed")); // Then send response
 
     } else {
-      // console.error("Error fetching playlists:", error);
       throw new ApiError(500, "Failed to fetch playlists", error);
     }
   }
@@ -156,7 +152,6 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
       }
     );
     const data = await response.data;
-    console.log("Data::", data);
     let backgroundImage = null;
     if (Array.isArray(data.playlists?.items)) {
       for (let i = data.playlists.items.length - 1; i >= 0; i--) {
@@ -210,16 +205,7 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
     ) {
       console.log("Access Token expired. Renewing it now.");
       const response = await renewToken(refresh_token);
-      console.log("response::", response);
       access_token = response?.access_token;
-      console.log("access_token after renewal::", access_token);
-
-      // let options = {
-      //   httpOnly: process.env.NODE_ENV === "production",
-      //   secure: process.env.NODE_ENV === "production",
-      //   sameSite: "None",
-      //   maxAge: 3600 * 1000,
-      // };
       const data = await makeQuery();
 
       res.cookie("access_token", access_token);
@@ -286,10 +272,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
   const refresh_token = req.cookies?.refresh_token
   const token_type = req.cookies?.token_type
 
-  console.log("Cookies::", req?.cookies);
-
   const playlistId = req.params.id;
-  console.log("Playlist ID::", playlistId);
 
   const makeQuery = async () => {
     const search_api = "https://api.spotify.com/v1/playlists/";
@@ -318,11 +301,8 @@ const getPlaylistById = asyncHandler(async (req, res) => {
       error?.response?.status === 401 &&
       error?.response?.data?.error?.message == "The access token expired"
     ) {
-      console.log("Access Token expired. Renewing it now.");
       const response = await renewToken(refresh_token);
-      console.log("response::", response);
       access_token = response?.access_token;
-      console.log("access_token after renewal::", access_token);
 
       // let options = {
       //   httpOnly: process.env.NODE_ENV === "production",
@@ -331,17 +311,12 @@ const getPlaylistById = asyncHandler(async (req, res) => {
       //   maxAge: 3600 * 1000,
       // };
 
-      console.log("cookies after renewal::");
-
       const playlist = await makeQuery();
-
-      // console.log("data::", data);
 
       res.cookie("access_token", access_token);
       res.status(200).json(new ApiResponse(200, playlist, "Data retrieved and access token refreshed")); // Then send response
 
     } else {
-      // console.error("Error fetching playlists:", error);
       throw new ApiError(500, "Failed to fetch playlists", error);
     }
   }

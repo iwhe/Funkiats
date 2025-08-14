@@ -8,7 +8,7 @@ const Home = () => {
       <div className="body flex flex-col mt-[50px] items-start  gap-[60px] h-full max-w-[1200px] ">
         <div className="flex flex-col gap-[30px]">
           <h2 className="heading lg:text-[80px]/[80px] md:text-[60px]/[60px] text-[40px]/[40px] font-helvetica font-bold">
-            I <span className="text-indigo-secondary">care</span> about your{" "}
+            We <span className="text-indigo-secondary">care</span> about your{" "}
             <span className="text-orange-secondary">mood</span> while listening
             music.
           </h2>

@@ -35,7 +35,7 @@ const Connect = () => {
 
     const currentPage = window.location.href;
     console.log("Current Page::", currentPage);
-    const authenticationPage = `http://localhost:7000/api/auth/authenticate?state=${encodeURIComponent(
+    const authenticationPage = `${import.meta.env.VITE_BACKEND_URL}/api/auth/authenticate?state=${encodeURIComponent(
       currentPage
     )}`;
 
