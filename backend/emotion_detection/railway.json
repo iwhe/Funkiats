@@ -9,7 +9,15 @@
             "phases": {
                 "setup": {
                     "nixPkgs": [
-                        "libGL"
+                        "python39",
+                        "libGL",
+                        "gcc"
+                    ]
+                },
+                "install": {
+                    "cmds": [
+                        "python3 -m pip install --upgrade pip",
+                        "python3 -m pip install -r requirements.txt"
                     ]
                 }
             }
