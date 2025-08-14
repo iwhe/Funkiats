@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.up.railway.app/railway.schema.json",
+    "build": {
+        "builder": "NIXPACKS",
+        "nixpacksPlan": {
+            "providers": [
+                "python"
+            ],
+            "phases": {
+                "setup": {
+                    "nixPkgs": [
+                        "libGL",
+                        "gcc"
+                    ]
+                },
+                "install": {
+                    "cmds": [
+                        "pip install -r requirements.txt"
+                    ]
+                }
+            }
+        }
+    },
+    "deploy": {
+        "startCommand": "gunicorn emotion_api:app",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+    }
+}
