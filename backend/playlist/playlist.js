@@ -6,6 +6,12 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import { analyzeEmotions } from "../utils/MusicParameters.js";
 
+let options = {
+  httpOnly: process.env.NODE_ENV === "production",
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "None",
+  maxAge: 3600 * 1000,
+};
 
 const getPlaylist = asyncHandler(async (req, res) => {
   // console.log("cookies", req?.cookies);
@@ -106,12 +112,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
       access_token = response?.access_token;
       console.log("access_token after renewal::", access_token);
 
-      let options = {
-        httpOnly: process.env.NODE_ENV === "production",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
-        maxAge: 3600 * 1000,
-      };
+
 
       console.log("cookies after renewal::");
 
@@ -208,7 +209,7 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
       access_token = response?.access_token;
       const data = await makeQuery();
 
-      res.cookie("access_token", access_token);
+      res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, data, "Data retrieved and access token refreshed")); // Then send response
 
     } else {
@@ -304,16 +305,16 @@ const getPlaylistById = asyncHandler(async (req, res) => {
       const response = await renewToken(refresh_token);
       access_token = response?.access_token;
 
-      // let options = {
-      //   httpOnly: process.env.NODE_ENV === "production",
-      //   secure: process.env.NODE_ENV === "production",
-      //   sameSite: "None",
-      //   maxAge: 3600 * 1000,
-      // };
+      const options = {
+        httpOnly: true,    // JS cannot read it
+        secure: true,      // HTTPS only
+        sameSite: "none",  // allow cross-site requests
+        path: "/",
+      };
 
       const playlist = await makeQuery();
 
-      res.cookie("access_token", access_token);
+      res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, playlist, "Data retrieved and access token refreshed")); // Then send response
 
     } else {

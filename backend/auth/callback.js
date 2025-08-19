@@ -44,19 +44,19 @@ const callback = asyncHandler(async (req, res) => {
     const scope = response.data.scope;
 
     const options = {
-      httpOnly: false,
-      secure: false,
-      sameSite: 'None',
-      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,    // JS cannot read it
+      secure: true,      // HTTPS only
+      sameSite: "none",  // allow cross-site requests
+      path: "/",
     };
 
     res
       .status(200)
-      .cookie("access_token", access_token)
-      .cookie("token_type", token_type)
-      .cookie("expires_in", expires_in)
-      .cookie("refresh_token", refresh_token)
-      .cookie("scope", scope)
+      .cookie("access_token", access_token, options)
+      .cookie("token_type", token_type, options)
+      .cookie("expires_in", expires_in, options)
+      .cookie("refresh_token", refresh_token, options)
+      .cookie("scope", scope, options)
 
     res.redirect(process.env.FRONTEND_URL + "/suggestion");
 
