@@ -10,7 +10,6 @@
                 "setup": {
                     "nixPkgs": [
                         "python310",
-                        "...",
                         "libGL",
                         "libGLU",
                         "mesa",
