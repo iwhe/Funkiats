@@ -9,6 +9,7 @@
             "phases": {
                 "setup": {
                     "nixPkgs": [
+                        "python310",
                         "...",
                         "libGL",
                         "libGLU",
