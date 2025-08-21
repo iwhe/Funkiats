@@ -18,7 +18,7 @@ const scopes = [
 const authentication = asyncHandler(async (req, res) => {
   console.log("Initiating Spotify OAuth flow...");  // Debug log
   // Replace the state line with:
-  const state = encodeURIComponent(decodeURIComponent(req.query.state || 'none'));
+  const state = (req.query.state || 'none');
 
   try {
     const authUrl = "https://accounts.spotify.com/authorize?" + queryString.stringify({

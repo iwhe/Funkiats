@@ -58,7 +58,7 @@ const callback = asyncHandler(async (req, res) => {
       httpOnly: true,    // JS cannot read it
       secure: true,      // HTTPS only
       sameSite: "none",  // allow cross-site requests
-      path: "/",
+      // path: "/",
       domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
     };
 
@@ -71,6 +71,7 @@ const callback = asyncHandler(async (req, res) => {
       .cookie("refresh_token", refresh_token, options)
       .cookie("scope", scope, options)
 
+    console.log("Cookies set. Now redirecting to:", process.env.FRONTEND_URL + "/suggestion");
     res.redirect(process.env.FRONTEND_URL + "/suggestion");
 
   } catch (error) {
