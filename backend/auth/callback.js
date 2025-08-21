@@ -48,6 +48,7 @@ const callback = asyncHandler(async (req, res) => {
       secure: true,      // HTTPS only
       sameSite: "none",  // allow cross-site requests
       path: "/",
+      domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "localhost"
     };
 
     res

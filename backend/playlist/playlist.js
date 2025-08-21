@@ -7,10 +7,11 @@ import ApiError from "../utils/ApiError.js";
 import { analyzeEmotions } from "../utils/MusicParameters.js";
 
 let options = {
-  httpOnly: process.env.NODE_ENV === "production",
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "None",
-  maxAge: 3600 * 1000,
+  httpOnly: true,    // JS cannot read it
+  secure: true,      // HTTPS only
+  sameSite: "none",  // allow cross-site requests
+  path: "/",
+  domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
 };
 
 const getPlaylist = asyncHandler(async (req, res) => {
@@ -305,12 +306,12 @@ const getPlaylistById = asyncHandler(async (req, res) => {
       const response = await renewToken(refresh_token);
       access_token = response?.access_token;
 
-      const options = {
-        httpOnly: true,    // JS cannot read it
-        secure: true,      // HTTPS only
-        sameSite: "none",  // allow cross-site requests
-        path: "/",
-      };
+      // const options = {
+      //   httpOnly: true,    // JS cannot read it
+      //   secure: true,      // HTTPS only
+      //   sameSite: "none",  // allow cross-site requests
+      //   path: "/",
+      // };
 
       const playlist = await makeQuery();
 
