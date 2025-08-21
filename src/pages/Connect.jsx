@@ -33,7 +33,7 @@ const Connect = () => {
     console.log('🎵 Connecting to Spotify...');
     setIsConnecting(true);
 
-    const currentPage = window.location.href;
+    const currentPage = window.location.href
     console.log("Current Page::", currentPage);
     const authenticationPage = `${import.meta.env.VITE_BACKEND_URL}/api/auth/authenticate?state=${encodeURIComponent(
       currentPage
