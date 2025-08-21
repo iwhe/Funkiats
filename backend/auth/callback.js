@@ -10,7 +10,11 @@ const redirect_uri = process.env.REDIRECT_URI;
 const callback = asyncHandler(async (req, res) => {
   console.log("Callback::", req.query);
   const code = req.query.code;
-  const state = req.query.state;
+  let state = req.query.state;
+  // Add this at the start of the handler:
+  if (state) {
+    state = decodeURIComponent(state).replace(/;/g, '');
+  }
 
   if (!code) {
     throw new ApiError(400, "Missing authorization code");
