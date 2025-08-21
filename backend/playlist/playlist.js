@@ -10,7 +10,7 @@ let options = {
   httpOnly: true,    // JS cannot read it
   secure: true,      // HTTPS only
   sameSite: "none",  // allow cross-site requests
-  path: "/",
+  // path: "/",
   domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
 };
 
@@ -21,8 +21,8 @@ const getPlaylist = asyncHandler(async (req, res) => {
   const token_type = req.cookies?.token_type || req.query?.token_type;
   // const search_query = req.query;
 
-  console.log("Cookies::", req?.cookies);
-  console.log("Query::", req?.query);
+  // console.log("Cookies::", req?.cookies);
+  // console.log("Query::", req?.query);
 
   const search_api = "https://api.spotify.com/v1/search";
   const analyzeEmotionsResult = analyzeEmotions(req.query.emotions);
@@ -36,7 +36,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
     limit: JSON.parse(req?.query?.limit),
   };
 
-  console.log("Params::", params);
+  // console.log("Params::", params);
 
   const makeQuery = async () => {
     console.log("Make Query");
@@ -48,9 +48,9 @@ const getPlaylist = asyncHandler(async (req, res) => {
         },
       }
     );
-    console.log("Response::", response);
+    // console.log("Response::", response);
     const data = await response.data;
-    console.log("Unformatted Data::", data);
+    // console.log("Unformatted Data::", data);
     let backgroundImage = null;
     if (Array.isArray(data.playlists?.items)) {
       for (let i = data.playlists.items.length - 1; i >= 0; i--) {
@@ -109,13 +109,13 @@ const getPlaylist = asyncHandler(async (req, res) => {
     ) {
       console.log("Access Token expired. Renewing it now.");
       const response = await renewToken(refresh_token);
-      console.log("response::", response);
+      // console.log("response::", response);
       access_token = response?.access_token;
-      console.log("access_token after renewal::", access_token);
+      // console.log("access_token after renewal::", access_token);
 
 
 
-      console.log("cookies after renewal::");
+      // console.log("cookies after renewal::");
 
       const data = await makeQuery();
 
@@ -134,7 +134,7 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
   const token_type = req.cookies?.token_type
 
   const search_api = "https://api.spotify.com/v1/search";
-  console.log("Query::", req?.query);
+  // console.log("Query::", req?.query);
   const emotionsString = req.query.q;
   const params = {
     q: emotionsString, // Remove JSON.stringify since we're already getting a string
@@ -142,7 +142,7 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
     limit: JSON.parse(req?.query?.limit) * 2,
   };
 
-  console.log("Params::", params);
+  // console.log("Params::", params);
   const makeQuery = async () => {
 
     const response = await axios.get(

@@ -35,6 +35,13 @@ const callback = asyncHandler(async (req, res) => {
   try {
     const response = await axios.post(authOptions.url, authOptions.form, {
       headers: authOptions.headers,
+    }).catch(error => {
+      console.error("Error from Spotify API:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        headers: error.response?.headers
+      });
+      throw error;
     });
 
     const access_token = response.data.access_token;
@@ -48,9 +55,10 @@ const callback = asyncHandler(async (req, res) => {
       secure: true,      // HTTPS only
       sameSite: "none",  // allow cross-site requests
       path: "/",
-      domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "localhost"
+      domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
     };
 
+    console.log("Options::", options);
     res
       .status(200)
       .cookie("access_token", access_token, options)
@@ -62,6 +70,12 @@ const callback = asyncHandler(async (req, res) => {
     res.redirect(process.env.FRONTEND_URL + "/suggestion");
 
   } catch (error) {
+    console.error("Error in callback route:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      stack: error.stack
+    });
     throw new ApiError(500, "Failed to get access token", error);
   }
 });
