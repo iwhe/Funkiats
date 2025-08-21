@@ -30,6 +30,10 @@ app.use(express.static("public"));
 app.use("/api/auth", authRoute);
 app.use("/api/playlist", playlistRoute);
 
+app.get("/", (req, res) => {
+  res.send("Hello World! Welcome to Funkiats. This is funkiats api.");
+});
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
