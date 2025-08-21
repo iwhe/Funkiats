@@ -66,6 +66,7 @@ const renewToken = async (refresh_token) => {
 
 const isAuthenticated = async (req, res) => {
   try {
+    console.log("Cookies::", req?.cookies);
     const auth_check = authCheck(req, res);
     console.log("Auth Check::", auth_check);
     if (auth_check) {

@@ -11,7 +11,7 @@ let options = {
   secure: true,      // HTTPS only
   sameSite: "none",  // allow cross-site requests
   // path: "/",
-  domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
+  // domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
 };
 
 const getPlaylist = asyncHandler(async (req, res) => {
