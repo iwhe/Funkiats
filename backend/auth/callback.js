@@ -1,6 +1,7 @@
 import axios from "axios";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import ApiError from "../utils/ApiError.js";
+import { generateToken } from "../utils/jwt.js";
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
@@ -54,25 +55,35 @@ const callback = asyncHandler(async (req, res) => {
     const refresh_token = response.data.refresh_token;
     const scope = response.data.scope;
 
-    const options = {
-      httpOnly: true,    // JS cannot read it
-      secure: true,      // HTTPS only
-      sameSite: "none",  // allow cross-site requests
-      // path: "/",
-      domain: process.env.NODE_ENV === "production" ? process.env.BACKEND_HOST : "localhost"
-    };
+    // Generate JWT
+    const token = generateToken({
+      access_token,
+      refresh_token,
+      expires_in: Date.now() + (expires_in * 1000)
+    });
 
-    console.log("Options::", options);
+    console.log("Token::", token);
+
+    // const options = {
+    //   httpOnly: true,    // JS cannot read it
+    //   secure: true,      // HTTPS only
+    //   sameSite: "none",  // allow cross-site requests
+    //   // path: "/",
+    //   domain: process.env.NODE_ENV === "production" ? process.env.BACKEND_HOST: "localhost"
+    // };
+    // console.log("Options::", options);
+
     res
       .status(200)
-      .cookie("access_token", access_token, options)
-      .cookie("token_type", token_type, options)
-      .cookie("expires_in", expires_in, options)
-      .cookie("refresh_token", refresh_token, options)
-      .cookie("scope", scope, options)
+    //   .cookie("access_token", access_token, options)
+    //   .cookie("token_type", token_type, options)
+    //   .cookie("expires_in", expires_in, options)
+    //   .cookie("refresh_token", refresh_token, options)
+    //   .cookie("scope", scope, options)
 
-    console.log("Cookies set. Now redirecting to:", process.env.FRONTEND_URL + "/suggestion");
-    res.redirect(process.env.FRONTEND_URL + "/suggestion");
+    // console.log("Cookies set. Now redirecting to:", process.env.FRONTEND_URL + "/suggestion");
+    // res.redirect(process.env.FRONTEND_URL + "/suggestion");
+    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${encodeURIComponent(token)}&expires_in=${expires_in * 1000}`);
 
   } catch (error) {
     console.error("Error in callback route:", {

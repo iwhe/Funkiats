@@ -6,19 +6,15 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import { analyzeEmotions } from "../utils/MusicParameters.js";
 
-let options = {
-  httpOnly: true,    // JS cannot read it
-  secure: true,      // HTTPS only
-  sameSite: "none",  // allow cross-site requests
-  // path: "/",
-  // domain: process.env.NODE_ENV === "production" ? process.env.FRONTEND_HOSTNAME : "localhost"
-};
-
+const token_type = "Bearer";
 const getPlaylist = asyncHandler(async (req, res) => {
   // console.log("cookies", req?.cookies);
-  let access_token = req.cookies?.access_token || req.query?.access_token;
-  const refresh_token = req.cookies?.refresh_token || req.query?.refresh_token;
-  const token_type = req.cookies?.token_type || req.query?.token_type;
+  let access_token = req.user?.access_token;
+  const refresh_token = req.user?.refresh_token;
+
+  // console.log("Access Token::", access_token);
+  // console.log("Refresh Token::", refresh_token);
+  // console.log("Token Type::", token_type);
   // const search_query = req.query;
 
   // console.log("Cookies::", req?.cookies);
@@ -39,7 +35,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
   // console.log("Params::", params);
 
   const makeQuery = async () => {
-    console.log("Make Query");
+    // console.log("Make Query");
     const response = await axios.get(
       `${search_api}?${queryString.stringify(params)}`,
       {
@@ -119,7 +115,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
 
       const data = await makeQuery();
 
-      res.cookie("access_token", access_token, options);
+      // res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, data, "Data retrieved and access token refreshed")); // Then send response
 
     } else {
@@ -129,9 +125,8 @@ const getPlaylist = asyncHandler(async (req, res) => {
 });
 
 const getPlaylistByKeyword = asyncHandler(async (req, res) => {
-  let access_token = req.cookies?.access_token
-  const refresh_token = req.cookies?.refresh_token
-  const token_type = req.cookies?.token_type
+  let access_token = req.user?.access_token;
+  const refresh_token = req.user?.refresh_token;
 
   const search_api = "https://api.spotify.com/v1/search";
   // console.log("Query::", req?.query);
@@ -210,7 +205,6 @@ const getPlaylistByKeyword = asyncHandler(async (req, res) => {
       access_token = response?.access_token;
       const data = await makeQuery();
 
-      res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, data, "Data retrieved and access token refreshed")); // Then send response
 
     } else {
@@ -270,9 +264,8 @@ const formatPlaylist = (playlist) => {
 
 
 const getPlaylistById = asyncHandler(async (req, res) => {
-  let access_token = req.cookies?.access_token
-  const refresh_token = req.cookies?.refresh_token
-  const token_type = req.cookies?.token_type
+  let access_token = req.user?.access_token;
+  const refresh_token = req.user?.refresh_token;
 
   const playlistId = req.params.id;
 
@@ -306,16 +299,8 @@ const getPlaylistById = asyncHandler(async (req, res) => {
       const response = await renewToken(refresh_token);
       access_token = response?.access_token;
 
-      // const options = {
-      //   httpOnly: true,    // JS cannot read it
-      //   secure: true,      // HTTPS only
-      //   sameSite: "none",  // allow cross-site requests
-      //   path: "/",
-      // };
-
       const playlist = await makeQuery();
 
-      res.cookie("access_token", access_token, options);
       res.status(200).json(new ApiResponse(200, playlist, "Data retrieved and access token refreshed")); // Then send response
 
     } else {

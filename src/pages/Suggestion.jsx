@@ -6,6 +6,10 @@ import { protectedRoute } from "../services/auth.js";
 import DisplayPlaylist from "../components/DisplayPlaylist";
 import { getPlaylist } from "../services/playlist.js";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSmile } from '@fortawesome/free-regular-svg-icons'
+
+
 const Suggestion = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [backgroundUrl, setBackgroundUrl] = useState("/logo.svg");
@@ -29,7 +33,7 @@ const Suggestion = () => {
         const response = await protectedRoute();
       } catch (error) {
         if (error?.response?.status === 401) {
-          console.log("suggestion page::User is not authenticated....");
+          // console.log("suggestion page::User is not authenticated....");
           navigate("/connect");
         }
       }
@@ -95,7 +99,7 @@ const Suggestion = () => {
         }]);
 
         const response = await getPlaylist(params);
-        console.log("response::", response);
+        // console.log("response::", response);
         setRecommendations(response.data);
       } catch (error) {
         console.error('API Error:', error);
@@ -109,7 +113,15 @@ const Suggestion = () => {
 
   return (
     <div className="relative md:p-[30px] p-[10px] bg-[image:--gradient-primary] h-full w-full flex flex-col gap-[10px]">
-      <Logo_nav />
+      <div className="flex items-center justify-between w-full">
+        <Logo_nav />
+        <button
+          onClick={() => navigate("/detect-mood")}
+          className="bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-2xl px-[20px] py-[10px] font-manrope font-semibold flex gap-[5px] items-center justify-center
+         hover:bg-indigo-secondary/20 hover:font-bold hover:scale-105 cursor-pointer transition-all duration-300 ease-in-out">
+          <FontAwesomeIcon icon={faSmile} className="w-[20px] h-[20px] text-indigo-secondary" />
+          Detect your mood</button>
+      </div>
       <div className="content flex lg:flex-row flex-col gap-[5px] ">
         <div className="left  overflow-hidden w-full bg-cover bg-no-repeat backdrop-blur-2xl shadow-[1_0_0_0.5px_rgba(0,250,246,0.2)] rounded-[20px] py-4 px-2 flex flex-col gap-[20px] disabled:opacity-10"
           style={{
@@ -186,7 +198,7 @@ const Suggestion = () => {
           </div> */}
 
           <div className="suggestions  bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/5 rounded-[20px] p-4 flex flex-col gap-[15px] ">
-            <h2 className="heading font-semibold md:text-[25px]/[40px] text-[20px]/[30px] font-helvetica text-center border-b-[0.5px] border-text-primary/5">
+            <h2 className="heading font-semibold md:text-[25px]/[40px] text-[20px]/[30px] font-helvetica text-center border-b-[0.5px] border-text-primary/5 text-zinc-200">
               Suggested moods
             </h2>
             <div className="options flex flex-wrap gap-[10px] w-full justify-center items-center ">
@@ -194,38 +206,15 @@ const Suggestion = () => {
                 <button
                   key={idx}
                   onClick={() => handleNewSuggestion(suggestion)}
-                  className="capitalize w-fit  bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-[15px] px-4 py-2 disabled:opacity-50 hover:scale-105 hover:-translate-y-0.5 hover:z-20 
-                 hover:shadow-[0_0px_10px_rgba(0,0,0,0.5)] 
-                 hover:bg-indigo-secondary/20 transition-colors cursor-pointer md:text-[16px]/[20px] text-[14px]/[20px] "
+                  className="capitalize w-fit  bg-indigo-secondary/10 border-[0.5px] border-text-primary/10 rounded-[15px] px-4 py-2 disabled:opacity-50 hover:scale-105 hover:-translate-y-0.5 hover:z-20 
+                 text-zinc-300 hover:text-text-primary
+                  hover:shadow-[0_0px_10px_rgba(0,0,0,0.5)] 
+                 hover:bg-indigo-secondary/20 transition-transform duration-300 ease-in-out cursor-pointer md:text-[16px]/[20px] text-[14px]/[20px] "
                   disabled={isLoading}
                 >
                   {suggestion}
                 </button>
               ))}
-              {/* <a
-                href="#"
-                className=" bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-[15px] p-4"
-              >
-                Happy & JoyFul
-              </a>
-              <a
-                href="#"
-                className=" bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-[15px] p-4"
-              >
-                Have a nice morning
-              </a>
-              <a
-                href="#"
-                className=" bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-[15px] p-4"
-              >
-                Happy
-              </a>
-              <a
-                href="#"
-                className=" bg-indigo-secondary/10 backdrop-blur-2xl border-[0.5px] border-text-primary/10 rounded-[15px] p-4"
-              >
-                JoyFul
-              </a> */}
             </div>
           </div>
         </div>

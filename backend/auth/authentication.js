@@ -64,22 +64,24 @@ const renewToken = async (refresh_token) => {
   return data;
 };
 
-const isAuthenticated = async (req, res) => {
+const isAuthenticated = async (req, res, next) => {
   try {
-    console.log("Cookies::", req?.cookies);
-    const auth_check = authCheck(req, res);
-    console.log("Auth Check::", auth_check);
-    if (auth_check) {
-      return res.status(200).json(new ApiResponse(200, "User is authenticated"));
-    } else if (auth_check == false || !auth_check) {
-      // throw new ApiError(401, "User is not authenticated");
-      return res.status(401).json(new ApiResponse(401, "User is not authenticated"));
+    // const isAuth = authCheck(req, res);
+    // console.log("Is Auth::", isAuth);
+    const token = req?.user;
+    console.log("Cookies::", token);
+    if (!token) {
+      return res.status(401)
+        .json(new ApiError(401, "Unauthorized: No valid token provided"));
     }
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User is authenticated"));
   } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
-    }
-    throw new ApiError(500, "Something went wrong");
+    console.error('Authentication error:', error);
+    return res
+      .status(500)
+      .json(new ApiError(500, "Internal server error during authentication", error));
   }
 };
 

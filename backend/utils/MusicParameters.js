@@ -1,11 +1,11 @@
 // Emotion → baseline energy & valence
 export const analyzeEmotions = (userDistribution) => {
     const parsedUserEmotions = parseUserEmotions(userDistribution);
-    console.log("Parsed User Emotions:", parsedUserEmotions);
+    console.log("User Emotions:", parsedUserEmotions);
     const vector = computeVector(parsedUserEmotions);
-    console.log("Vector:", vector);
+    // console.log("Vector:", vector);
     const moodTerms = getMoodTerms(vector);
-    console.log("Mood Terms:", moodTerms);
+    // console.log("Mood Terms:", moodTerms);
     return moodTerms;
 }
 
@@ -19,21 +19,6 @@ const emotions = {
     neutral: { energy: 0.5, valence: 0.5 },
     calm: { energy: 0.3, valence: 0.6 }
 };
-
-// Mood buckets (energy x valence → Spotify search terms)
-// const moodGrid = [
-//     { cond: e => e.energy <= 0.33 && e.valence <= 0.33, terms: ["sad", "melancholy", "piano"] },
-//     { cond: e => e.energy <= 0.33 && e.valence <= 0.66, terms: ["calm", "chill", "focus"] },
-//     { cond: e => e.energy <= 0.33 && e.valence > 0.66, terms: ["romantic", "soft", "acoustic"] },
-
-//     { cond: e => e.energy <= 0.66 && e.valence <= 0.33, terms: ["moody", "dark", "grunge"] },
-//     { cond: e => e.energy <= 0.66 && e.valence <= 0.66, terms: ["neutral", "ambient", "study"] },
-//     { cond: e => e.energy <= 0.66 && e.valence > 0.66, terms: ["chill happy", "soft pop", "light upbeat"] },
-
-//     { cond: e => e.energy > 0.66 && e.valence <= 0.33, terms: ["angry", "metal", "punk"] },
-//     { cond: e => e.energy > 0.66 && e.valence <= 0.66, terms: ["excited", "energetic", "rock"] },
-//     { cond: e => e.energy > 0.66 && e.valence > 0.66, terms: ["happy", "dance", "party"] }
-// ];
 
 function parseUserEmotions(raw) {
     let parsed;
@@ -75,140 +60,6 @@ function computeVector(distribution) {
     return { energy: +energy.toFixed(2), valence: +valence.toFixed(2) };
 }
 
-// Step 2: Match vector to mood keywords
-// function getMoodTerms(vector) {
-//     return moodGrid.find(m => m.cond(vector)).terms;
-// }
-
-// Enhanced mood mapping with personalized discovery
-// const moodGrid = [
-//     // Low Energy, Low Valence (Deep, Reflective)
-//     {
-//         cond: e => e.energy <= 0.33 && e.valence <= 0.33,
-//         terms: [
-//             "melancholic soundscapes",
-//             "emotional piano ballads",
-//             "sad indie folk",
-//             "ambient melancholy",
-//             "heartfelt acoustic",
-//             "rainy day introspection",
-//             "lo-fi sad beats",
-//             "soulful ballads"
-//         ]
-//     },
-//     // Low Energy, Medium Valence (Calm, Focused)
-//     {
-//         cond: e => e.energy <= 0.33 && e.valence <= 0.66,
-//         terms: [
-//             "chill focus beats",
-//             "ambient study music",
-//             "peaceful piano",
-//             "zen meditation",
-//             "concentration flow",
-//             "mindful moments",
-//             "deep work soundtrack",
-//             "calm focus"
-//         ]
-//     },
-//     // Low Energy, High Valence (Content, Serene)
-//     {
-//         cond: e => e.energy <= 0.33 && e.valence > 0.66,
-//         terms: [
-//             "acoustic morning",
-//             "indie folk warmth",
-//             "chill acoustic love",
-//             "gentle happiness",
-//             "soft morning light",
-//             "peaceful acoustic",
-//             "tender moments",
-//             "serene soundscapes"
-//         ]
-//     },
-//     // Medium Energy, Low Valence (Moody, Complex)
-//     {
-//         cond: e => e.energy <= 0.66 && e.valence <= 0.33,
-//         terms: [
-//             "indie sadcore",
-//             "dark pop vibes",
-//             "moody alternative",
-//             "emotional rock",
-//             "atmospheric indie",
-//             "brooding electronica",
-//             "deep indie",
-//             "melancholy pop"
-//         ]
-//     },
-//     // Medium Energy, Medium Valence (Balanced, Versatile)
-//     {
-//         cond: e => e.energy <= 0.66 && e.valence <= 0.66,
-//         terms: [
-//             "indie discovery",
-//             "eclectic mix",
-//             "vibey tunes",
-//             "indie gems",
-//             "chillwave beats",
-//             "indie anthems",
-//             "alternative vibes",
-//             "indie mix"
-//         ]
-//     },
-//     // Medium Energy, High Valence (Upbeat, Positive)
-//     {
-//         cond: e => e.energy <= 0.66 && e.valence > 0.66,
-//         terms: [
-//             "indie pop sunshine",
-//             "feel good indie",
-//             "indie dance party",
-//             "indie summer",
-//             "indie roadtrip",
-//             "indie happiness",
-//             "indie good vibes",
-//             "indie feel good"
-//         ]
-//     },
-//     // High Energy, Low Valence (Intense, Powerful)
-//     {
-//         cond: e => e.energy > 0.66 && e.valence <= 0.33,
-//         terms: [
-//             "intense rock ballads",
-//             "powerful alternative",
-//             "emotional rock",
-//             "dark energy",
-//             "power ballads",
-//             "intense anthems",
-//             "rock catharsis",
-//             "powerful vocals"
-//         ]
-//     },
-//     // High Energy, Medium Valence (Energetic, Dynamic)
-//     {
-//         cond: e => e.energy > 0.66 && e.valence <= 0.66,
-//         terms: [
-//             "indie rock energy",
-//             "alternative anthems",
-//             "indie workout",
-//             "rock revival",
-//             "indie party",
-//             "festival vibes",
-//             "indie rock mix",
-//             "alternative energy"
-//         ]
-//     },
-//     // High Energy, High Valence (Euphoric, Joyful)
-//     {
-//         cond: e => e.energy > 0.66 && e.valence > 0.66,
-//         terms: [
-//             "indie dance party",
-//             "feel good pop",
-//             "indie summer hits",
-//             "indie disco",
-//             "indie dancefloor",
-//             "indie celebration",
-//             "indie euphoria",
-//             "indie joyride"
-//         ]
-//     }
-// ];
 
 const moodGrid = [
     // Low Energy, Low Valence (Deep, Reflective)
@@ -342,7 +193,6 @@ const moodGrid = [
 // Enhanced mood term selection with context awareness
 function getMoodTerms(vector) {
     const mood = moodGrid.find(m => m.cond(vector));
-    // const timeBasedTerms = getTimeBasedTerms();
     const seasonalTerms = getSeasonalTerms();
 
     // Combine mood terms with contextual terms

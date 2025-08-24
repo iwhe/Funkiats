@@ -1,6 +1,11 @@
 import { getPlaylistDetail } from "../services/playlist";
 import { useEffect, useState } from "react";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
+
+
 const DisplayPlaylist = ({ id, handlePlaylistClose }) => {
     const [playlistsDetail, setPlaylistsDetail] = useState(null);
     useEffect(() => {
@@ -102,8 +107,11 @@ const DisplayPlaylist = ({ id, handlePlaylistClose }) => {
                     ))}
                 </div>
 
-                <div className="absolute top-2 right-2 cursor-pointer bg-red-500/10 hover:bg-red-500/20 backdrop-blur-lg px-2 py-1 rounded-full text-text-primary font-bold text-xs z-[1000]">
-                    <button onClick={handlePlaylistClose} className="text-text-primary">X</button>
+                <div
+                    onClick={handlePlaylistClose} className="absolute  top-2 right-2 cursor-pointer hover:bg-red-500/20 transition-colors duration-200 backdrop-blur-lg p-1 rounded-full text-text-primary font-bold text-xs z-[1000]">
+                    {/* <button  className=""> */}
+                    <FontAwesomeIcon icon={faXmark} className="w-[20px] h-[20px] text-red-600 hover:text-text-primary transition-colors duration-200" />
+                    {/* </button> */}
                 </div>
             </div>
         )
